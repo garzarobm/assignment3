@@ -3,7 +3,7 @@ package assignment3;
 import java.util.*;
 
 public class DictGraph {
-	
+	//new comment
 	ArrayList<String> words;
 	HashMap<String, ArrayList<String>> neighbors;
 	
