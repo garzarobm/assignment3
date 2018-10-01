@@ -10,7 +10,6 @@
  * Slip days used: <0>
  * Git URL:
  * Fall 2018
- * new comment
  */
 
 
@@ -103,26 +102,7 @@ public class Main {
 		ArrayList<String> ladder = new ArrayList<String>();
 			
 		ladder.add(start);
-		
-		
-		
-		
-		
-		// TODO more code
-		return recursiveDFS(ladder,start,end); // replace this line later with real return
-	}
-	
-	//recursive DFS word ladder function
-	public static ArrayList<String> recursiveDFS(ArrayList<String> ladder, String start, String end){
-		
-		if(start.equals(end)) {
-			return ladder;
-		}
-		
-		
-		
-		
-		
+
 		return ladder;
 	}
 	
