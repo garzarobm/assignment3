@@ -20,6 +20,7 @@ import java.io.*;
 public class Main {
 	
 	// static variables and constants only here.
+	static public DictGraph dict_graph;
 	
 	public static void main(String[] args) throws Exception {
 		
@@ -37,16 +38,28 @@ public class Main {
 		initialize();
 		
 		// TODO methods to read in words, output ladder
+		ArrayList<String> input = new ArrayList<String>();
+		input = parse(kb);
 		
-		ArrayList<String> input = parse(kb);
-		getWordLadderDFS(input.get(0),input.get(1));
-		
+		while(!input.get(0).equals("/quit") && !input.get(1).equals("/quit")) {
+			
+			ArrayList<String> ladder = getWordLadderDFS(input.get(0),input.get(1));
+			printLadder(ladder);
+			input = parse(kb);
+			
+		}
 	}
 	
 	public static void initialize() {
 		// initialize your static variables or constants here.
 		// We will call this method before running our JUNIT tests.  So call it 
 		// only once at the start of main.
+				
+		Set<String> dict = makeDictionary();
+		dict_graph = new DictGraph(dict);
+		
+		
+		
 	}
 	
 	/**
@@ -85,18 +98,37 @@ public class Main {
 		// Returned list should be ordered start to end.  Include start and end.
 		// If ladder is empty, return list with just start and end.
 		// TODO some code
-		Set<String> dict = makeDictionary();
+		
+		ArrayList<String> ladder = new ArrayList<String>();
+			
+		ladder.add(start);
+		
+		
 		
 		
 		
 		// TODO more code
-		return null; // replace this line later with real return
+		return recursiveDFS(ladder,start,end); // replace this line later with real return
+	}
+	
+	//recursive DFS word ladder function
+	public static ArrayList<String> recursiveDFS(ArrayList<String> ladder, String start, String end){
+		
+		if(start.equals(end)) {
+			return ladder;
+		}
+		
+		
+		
+		
+		
+		return ladder;
 	}
 	
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
 		
 		// TODO some code
-		Set<String> dict = makeDictionary();
+		//Set<String> dict = makeDictionary();
 		// TODO more code
 		
 		return null; // replace this line later with real return
