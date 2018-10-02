@@ -98,14 +98,80 @@ public class Main {
 		// Returned list should be ordered start to end.  Include start and end.
 		// If ladder is empty, return list with just start and end.
 		// TODO some code
-		
+		HashSet<String> checkedValues = new HashSet<String>();
 		ArrayList<String> ladder = new ArrayList<String>();
-			
-		ladder.add(start);
-
-		return ladder;
+		ladder = recursiveDFS(checkedValues, start, end);
+		if (ladder == null) {
+			ArrayList<String> failedCase = new ArrayList<String>();
+			failedCase.add(start);
+			failedCase.add(end);
+			return failedCase;
+		}
+		else {
+		    Collections.reverse(ladder);
+		    return ladder;
+		}
+		
 	}
+	public static ArrayList<String> recursiveDFS( HashSet<String> a, String start, String end){
+		a.add(start);
+		if(start.equals(end)) {
+			
+			ArrayList<String> done = new ArrayList<String>();
+			done.add(end);
+			return done;
+		}
+		for(String neighbor: dict_graph.neighbors.get(start.toUpperCase())) {
+			ArrayList<String> local = new ArrayList<String>();
+			if(a.contains(neighbor)) {
+				continue;
+			}
+			local = recursiveDFS(a, neighbor, end);
+			if (local != null) {
+				local.add(start);
+				return local;
+			}
+			
+		}
+		return null;
+		
+		
+		
+//		if(start == null){
+//			ArrayList<String> nullCase = new ArrayList<String>();
+//			nullCase.add("exception");
+//			
+//			return nullCase;
+//		}
+//		if(start.equals(end)) {
+//			b.add(end);
+//			return b;
+//		}
+//			a.add(start);
+//			String next = getUnvisitedNeighbor(a, start);
+//			
+//			ArrayList<String> temp = recursiveDFS(a, b, next, end);
+//			if(temp == null) {
+////				next = getUnvisitedNeighbor
+////				return temp;
+//			}
+//			return temp;
 	
+		
+		
+	}
+	public static String getUnvisitedNeighbor(HashSet<String> a, String start) {
+		
+		for(int i = 0; i < dict_graph.neighbors.get(start.toUpperCase()).size(); i++) {
+			String temp = dict_graph.neighbors.get(start.toUpperCase()).get(i);
+			if (!a.contains(temp)) {
+				return temp;
+			}
+			
+		}
+		return null;
+		
+	}
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
 		
 		// TODO some code
