@@ -43,7 +43,8 @@ public class Main {
 		
 		while(!input.get(0).equals("/quit") && !input.get(1).equals("/quit")) {
 			
-			ArrayList<String> ladder = getWordLadderDFS(input.get(0),input.get(1));
+			//ArrayList<String> ladder = getWordLadderDFS(input.get(0),input.get(1));
+			ArrayList<String> ladder = getWordLadderBFS(input.get(0), input.get(1));
 			printLadder(ladder);
 			input = parse(kb);
 			
@@ -57,7 +58,7 @@ public class Main {
 				
 		Set<String> dict = makeDictionary();
 		dict_graph = new DictGraph(dict);
-		
+		HashSet<String> b = new HashSet<String>();
 		
 		
 	}
@@ -173,13 +174,92 @@ public class Main {
 		
 	}
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
+    	
+    	HashMap<String, String> previous = new HashMap<String, String>();
+    	ArrayList<String> words = new ArrayList<String>(dict_graph.neighbors.keySet());
+    	int sizeOfNeighbors = dict_graph.neighbors.size();
+    	
+    	for(int i = 0; i < sizeOfNeighbors; i++) {
+    		previous.put(words.get(i), "");
+    	}
+        	
+    	ArrayList<String> queue = new ArrayList<String>();
+    	HashSet<String> a = new HashSet<String>();
+    	ArrayList<String> ladder = new ArrayList<String>();
+    	boolean done = false;
+    	
+    	queue.add(start);
+    	a.add(start);
+    	
+    	while(!queue.isEmpty()) {
+    		
+    		String temp = queue.remove(0);
+    	
+        	
+        	for(String n: dict_graph.neighbors.get(temp.toUpperCase())){
+        		if(!a.contains(n)) {
+    			a.add(n);
+    			previous.put(n, temp);
+    			queue.add(n);
+        		}
+        		if (n.equals(end)) {
+        			done = true;
+        			break;
+        		}
+        		
+        		
+    	}
+        	if(done == true) {
+        	break;
+        	}
+    	}
+    	
+    	
+		return ladder;
+    	
+    	
+//    	HashSet<String> checkedValues = new HashSet<String>();
+//    	ArrayList<String> line = new ArrayList<String>();
+//    	line.add(start);
+//    	
+//    	while(true) {
+//    	String test = checkValues(line, start, end);
+//    	checkedValues.add(start);
+//		if (test.equals(start)) {
+//			
+//			start = getUnvisitedNeighbor(checkedValues, test);
+//			
+//			
+//		}
+//		else if (test.equals(end) ) {
+//			return line;
+//		}
+//		else {
+//			ArrayList<String> done = new ArrayList<String>();
+//			done.add(end);
+//			return done; 
+//		}
+//    	}
 		
-		// TODO some code
-		//Set<String> dict = makeDictionary();
-		// TODO more code
-		
-		return null; // replace this line later with real return
+
 	}
+    public static String checkValues(ArrayList<String> a, HashSet<String> a, String start, String end) {
+    	String storedString = start;
+    
+    	int hello = dict_graph.neighbors.get(start.toUpperCase()).size();
+    	
+    	for(int i = 0; i < hello; i++) {
+			start = dict_graph.neighbors.get(storedString.toUpperCase()).get(i);
+			
+			if(start.equals(end)) {
+					return start;
+			
+    }
+    	}
+    		return storedString;
+    	
+    }
+    	
     
 	
 	public static void printLadder(ArrayList<String> ladder) {
