@@ -114,6 +114,97 @@ public class Main {
 		}
 		
 	}
+
+	
+    public static ArrayList<String> getWordLadderBFS(String start, String end) {
+    	
+    	HashMap<String, String> previous = new HashMap<String, String>();
+    	ArrayList<String> words = new ArrayList<String>(dict_graph.neighbors.keySet());
+    	int sizeOfDict = dict_graph.neighbors.size();
+    	
+    	for(int i = 0; i < sizeOfDict; i++) {
+    		previous.put(words.get(i), "");
+    	}
+        	
+    	ArrayList<String> queue = new ArrayList<String>();
+    	HashSet<String> visited = new HashSet<String>();
+    	ArrayList<String> ladder = new ArrayList<String>();
+    	boolean done = false;
+    	boolean found = false;
+    	
+    	queue.add(start);
+    	visited.add(start);
+    	
+    	while(!queue.isEmpty()) {
+    		
+    		String temp = queue.remove(0);
+    		
+    		   	
+        	for(String n: dict_graph.neighbors.get(temp.toUpperCase())){
+        		
+        		if(!visited.contains(n)) {
+    			visited.add(n);
+    			previous.put(n, temp);
+    			queue.add(n);
+        		}
+        		
+        		if (n.equals(end)) {
+        			found = true;
+        			done = true;
+        			break;
+        		}
+        		        		
+        	}
+        	
+        	if(done == true) {
+        	break;
+        	}
+        	
+    	}
+    	
+    	
+    	String current = new String(end);
+    	
+    	while(current != start && found == true) {
+    		ladder.add(current);
+    		current = previous.get(current);
+    	}
+    	
+    	ladder.add(current);
+    	
+    	Collections.reverse(ladder);
+    	
+    	if(found == true) {
+    		return ladder;
+    	}else {
+    		ArrayList<String> failedCase = new ArrayList<String>();
+			failedCase.add(start);
+			failedCase.add(end);
+			return failedCase;
+    	}
+    	
+    }
+    	
+    
+	//Method to print ladder
+	public static void printLadder(ArrayList<String> ladder) {
+		
+		int rung_num = ladder.size() - 2;
+		
+		if(rung_num == 0 && !dict_graph.neighbors.get(ladder.get(0).toUpperCase()).contains(ladder.get(1))) {
+			System.out.println("no word ladder can be found between " + ladder.get(0) + " and " + ladder.get(1) + ".");
+		}else {
+			System.out.println("a " + rung_num + "-rung word ladder exists between " + ladder.get(0) + " and " + ladder.get(ladder.size()-1) + ".");
+		}
+		
+		for(int i=0;i<ladder.size();i++) {
+			System.out.println(ladder.get(i));
+		}
+	}
+	// TODO
+	// Other private static methods here
+
+	//recursive helper function for DFS algorithm
 	public static ArrayList<String> recursiveDFS( HashSet<String> a, String start, String end){
 		a.add(start);
 		if(start.equals(end)) {
@@ -134,33 +225,12 @@ public class Main {
 			}
 			
 		}
+		
 		return null;
-		
-		
-		
-//		if(start == null){
-//			ArrayList<String> nullCase = new ArrayList<String>();
-//			nullCase.add("exception");
-//			
-//			return nullCase;
-//		}
-//		if(start.equals(end)) {
-//			b.add(end);
-//			return b;
-//		}
-//			a.add(start);
-//			String next = getUnvisitedNeighbor(a, start);
-//			
-//			ArrayList<String> temp = recursiveDFS(a, b, next, end);
-//			if(temp == null) {
-////				next = getUnvisitedNeighbor
-////				return temp;
-//			}
-//			return temp;
-	
-		
-		
+				
 	}
+	
+	//method to get unvisited neighbor for word start, used in DFS algorithm
 	public static String getUnvisitedNeighbor(HashSet<String> a, String start) {
 		
 		for(int i = 0; i < dict_graph.neighbors.get(start.toUpperCase()).size(); i++) {
@@ -173,104 +243,6 @@ public class Main {
 		return null;
 		
 	}
-    public static ArrayList<String> getWordLadderBFS(String start, String end) {
-    	
-    	HashMap<String, String> previous = new HashMap<String, String>();
-    	ArrayList<String> words = new ArrayList<String>(dict_graph.neighbors.keySet());
-    	int sizeOfNeighbors = dict_graph.neighbors.size();
-    	
-    	for(int i = 0; i < sizeOfNeighbors; i++) {
-    		previous.put(words.get(i), "");
-    	}
-        	
-    	ArrayList<String> queue = new ArrayList<String>();
-    	HashSet<String> a = new HashSet<String>();
-    	ArrayList<String> ladder = new ArrayList<String>();
-    	boolean done = false;
-    	
-    	queue.add(start);
-    	a.add(start);
-    	
-    	while(!queue.isEmpty()) {
-    		
-    		String temp = queue.remove(0);
-    	
-        	
-        	for(String n: dict_graph.neighbors.get(temp.toUpperCase())){
-        		if(!a.contains(n)) {
-    			a.add(n);
-    			previous.put(n, temp);
-    			queue.add(n);
-        		}
-        		if (n.equals(end)) {
-        			done = true;
-        			break;
-        		}
-        		
-        		
-    	}
-        	if(done == true) {
-        	break;
-        	}
-    	}
-    	
-    	
-		return ladder;
-    	
-    	
-//    	HashSet<String> checkedValues = new HashSet<String>();
-//    	ArrayList<String> line = new ArrayList<String>();
-//    	line.add(start);
-//    	
-//    	while(true) {
-//    	String test = checkValues(line, start, end);
-//    	checkedValues.add(start);
-//		if (test.equals(start)) {
-//			
-//			start = getUnvisitedNeighbor(checkedValues, test);
-//			
-//			
-//		}
-//		else if (test.equals(end) ) {
-//			return line;
-//		}
-//		else {
-//			ArrayList<String> done = new ArrayList<String>();
-//			done.add(end);
-//			return done; 
-//		}
-//    	}
-		
-
-	}
-    public static String checkValues(ArrayList<String> a, HashSet<String> a, String start, String end) {
-    	String storedString = start;
-    
-    	int hello = dict_graph.neighbors.get(start.toUpperCase()).size();
-    	
-    	for(int i = 0; i < hello; i++) {
-			start = dict_graph.neighbors.get(storedString.toUpperCase()).get(i);
-			
-			if(start.equals(end)) {
-					return start;
-			
-    }
-    	}
-    		return storedString;
-    	
-    }
-    	
-    
-	
-	public static void printLadder(ArrayList<String> ladder) {
-		
-		for(int i=0;i<ladder.size();i++) {
-			System.out.println(ladder.get(i));
-		}
-	}
-	// TODO
-	// Other private static methods here
-
 
 	/* Do not modify makeDictionary */
 	public static Set<String>  makeDictionary () {
