@@ -41,12 +41,16 @@ public class Main {
 		ArrayList<String> input = new ArrayList<String>();
 		input = parse(kb);
 		
+		if(input == null) return;
+		
 		while(!input.get(0).equals("/quit") && !input.get(1).equals("/quit")) {
 			
 			//ArrayList<String> ladder = getWordLadderDFS(input.get(0),input.get(1));
 			ArrayList<String> ladder = getWordLadderBFS(input.get(0), input.get(1));
 			printLadder(ladder);
 			input = parse(kb);
+			
+			if(input == null) break;
 			
 		}
 	}
@@ -58,7 +62,7 @@ public class Main {
 				
 		Set<String> dict = makeDictionary();
 		dict_graph = new DictGraph(dict);
-		HashSet<String> b = new HashSet<String>();
+		
 		
 		
 	}
@@ -73,14 +77,14 @@ public class Main {
 		
 		String first_word = keyboard.next();
 		
-		if(first_word.equals("/Quit")) {
-			return new ArrayList<String>();
+		if(first_word.equals("/quit")) {
+			return null;
 		}
 		
 		String second_word = keyboard.next();
 		
-		if(second_word.equals("/Quit")) {
-			return new ArrayList<String>();
+		if(second_word.equals("/quit")) {
+			return null;
 		}
 		
 		
@@ -99,6 +103,10 @@ public class Main {
 		// Returned list should be ordered start to end.  Include start and end.
 		// If ladder is empty, return list with just start and end.
 		// TODO some code
+		
+		start = start.toLowerCase();
+		end = end.toLowerCase();
+		
 		HashSet<String> checkedValues = new HashSet<String>();
 		ArrayList<String> ladder = new ArrayList<String>();
 		ladder = recursiveDFS(checkedValues, start, end);
@@ -117,6 +125,9 @@ public class Main {
 
 	
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
+    	
+    	start = start.toLowerCase();
+		end = end.toLowerCase();
     	
     	HashMap<String, String> previous = new HashMap<String, String>();
     	ArrayList<String> words = new ArrayList<String>(dict_graph.neighbors.keySet());
@@ -193,6 +204,7 @@ public class Main {
 		
 		if(rung_num == 0 && !dict_graph.neighbors.get(ladder.get(0).toUpperCase()).contains(ladder.get(1))) {
 			System.out.println("no word ladder can be found between " + ladder.get(0) + " and " + ladder.get(1) + ".");
+			return;
 		}else {
 			System.out.println("a " + rung_num + "-rung word ladder exists between " + ladder.get(0) + " and " + ladder.get(ladder.size()-1) + ".");
 		}

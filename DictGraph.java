@@ -8,8 +8,7 @@ public class DictGraph {
 	HashMap<String, ArrayList<String>> neighbors;
 	
 	public DictGraph(Set<String> dict) {
-		
-		words = new ArrayList<String>();
+
 		neighbors = new HashMap<String, ArrayList<String>>();
 		
 		
